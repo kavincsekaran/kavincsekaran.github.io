@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="author" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<title>Kavin Chandrasekaran - Blog Post</title>
+
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/font-awesome.min.css">
+
+<!-- Main css -->
+<link rel="stylesheet" href="css/style.css">
+<link href="https://fonts.googleapis.com/css?family=Work+Sans:300,400,700" rel="stylesheet">
+
+</head>
+<body>
+
+<!-- PRE LOADER -->
+
+<div class="preloader">
+     <div class="sk-spinner sk-spinner-wordpress">
+          <span class="sk-inner-circle"></span>
+     </div>
+</div>
+
+<!-- Navigation section  -->
+
+<div class="navbar navbar-default navbar-static-top" role="navigation">
+     <div class="container">
+
+          <div class="navbar-header">
+               <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon icon-bar"></span>
+                    <span class="icon icon-bar"></span>
+                    <span class="icon icon-bar"></span>
+               </button>
+               <a href="index.html" class="navbar-brand"><i class="fa fa-magnet"></i></a>
+          </div>
+          <div class="collapse navbar-collapse">
+               <ul class="nav navbar-nav navbar-right">
+                 <li><a href="index.html">About Me</a></li>
+                 <li><a href="publications.pdf">Publications</a></li>
+                 <li><a href="projects.html">Projects</a></li>
+                 <li><a href="resume.pdf">Resume</a></li>
+                 <li class="active"><a href="blog.html">Blog</a></li>
+               </ul>
+          </div>
+
+  </div>
+</div>
+
+<!-- Blog Single Post Section -->
+
+<section id="blog-single-post">
+     <div class="container">
+          <div class="row">
+
+               <div class="col-md-offset-1 col-md-10 col-sm-12">
+                    <div class="blog-single-post-thumb">
+                         <div class="blog-post-image">
+                              <img src="images/blog-image1.jpg" class="img-responsive" alt="Blog Image">
+                         </div>
+
+                         <div class="blog-post-title">
+                              <h2>Custom mouse button mapping for the indecisive ambidexter</a></h2>
+                         </div>
+
+                         <div class="blog-post-format">
+                              <span><a href="#"><img src="images/author-image1.jpg" class="img-responsive img-circle"> Kavin Chandrasekaran</a></span>
+                              <span><i class="fa fa-date"></i> Oct 30, 2018</span>
+                              <span><a href="#"><i class="fa fa-comment-o"></i> 0 Comments</a></span>
+                         </div>
+
+                         <div class="blog-post-des">
+                              <p>​Are you ambidextrous? Do you switch the mouse between right and left hands often? Cannot use the Logitech's software for button maps because you're on a Linux distro? Well, I was in that same situation and I realized I needed to dig up my long forgotten shell scripting.</p>
+
+                              <p>After being able to afford a Windows license, I had forgotten my once beloved shell scripts from the good 'ol Ubuntu days, when Canonical would ship an Ubuntu CD internationally, for FREE, if you just ask for it. Now that Microsoft has worked so hard to drive me crazy with their uninstallable bloatware and incessant updates I am back on Ubuntu.</p>
+
+                              <p>I often switch my mouse between right and left depending on my mood or because of a mess I made on one side of the table and I am not ready to clean up just yet. My friends think I have an evil alter-ego who is left-handed and he just takes over on my bad days; I am not entirely dismissing that theory yet. Ever since the serious real-estate upgrade of my displays, I wanted to get something with a trackball (SERIOUSLY! who wants to keep dragging the wrist around to get from one end to another), I went old school and got this wonderful Logitech Trackman. I got it partially because of the ambidexterity support; okay, because it was the only one I could find. To sum it up, it is awesome!, a bliss too adapt and extremely comfortable to use.</p>
+
+                              <p>But just plugging it in and using in Ubuntu 18.04, it had it's drawbacks. My major issue was with the lack of the scroll wheel functionality. Google came to the rescue and pointed me to what I could do about it.</p>
+
+                              <p>All I had to do was to write a tiny script to turn on wheel emulation and assign a button to use in combination with the trackball to make it a wheel. Jordi Castells it in a detailed way (Did you notice the pun. Huh-huh). Check his post for button maps and how to decide on the numbers to use in the commands.</p>
+
+                              <p>Below is the script to enable wheel for right hand button map.</p>
+                              <blockquote>
+                                <p>#!/bin/bash</p>
+
+                                <p>xinput set-int-prop "Logitech USB Trackball" "Evdev Wheel Emulation Button" 8 8</p>
+                                <p>xinput set-int-prop "Logitech USB Trackball" "Evdev Wheel Emulation" 8 1</p>
+                                <p>xinput set-int-prop "Logitech USB Trackball" "Evdev Middle Button Emulation" 8 1</p>
+                                <p>xinput set-button-map "Logitech USB Trackball" 1 9 3 4 5 6 7 8 2</p>
+                                <p>xinput set-prop "Logitech USB Trackball" "Device Accel Constant Deceleration" 0.7</p>
+
+                                <p>notify-send -t 3000 "Changed mouse to right-hand profile"</p>
+
+                              </blockquote>
+                              <p>Run it when you feel like switching to right, or call it from your ~/.xprofile and it runs at the beginning of every session. Easy peasy right. Nope.</p>
+
+                              <p>Notice the parameter to set the Wheel Emulation is using the the Evdev set of drivers. But Ubuntu 18.04 came with libinput input drivers. The fix turned out to be really easy, or at least it worked and hasn't broken anything else. Just switch the drivers to Evdev.
+                              </p>
+                              <blockquote>
+                                <p>sudo apt remove xserver-xorg-input-libinput</p>
+                                <p>sudo apt install xserver-xorg-input-evdev</p>
+
+                              </blockquote>
+                              <p>Now the script runs and the mouse wheel functionality works. TADA!!. But wait, I wasn't done yet. I need a script for my left-handed days and I need a desktop shortcut where I can switch between right-handed and left-handed profiles.</p>
+
+                                <p>Script for changing to left-hand button map:
+                                </p>
+                                <blockquote>
+                                  <p>#!/bin/bash</p>
+
+                                  <p>xinput set-int-prop "Logitech USB Trackball" "Evdev Wheel Emulation Button" 8 9</p>
+                                  <p>xinput set-int-prop "Logitech USB Trackball" "Evdev Wheel Emulation" 8 1</p>
+                                  <p>xinput set-int-prop "Logitech USB Trackball" "Evdev Middle Button Emulation" 8 1</p>
+                                  <p>xinput set-button-map "Logitech USB Trackball" 3 8 1 4 5 6 7 2 9</p>
+                                  <p>xinput set-prop "Logitech USB Trackball" "Device Accel Constant Deceleration" 0.7</p>
+                                </blockquote>
+                                <p>The desktop file contains:</p>
+                                <blockquote>
+                                  <p>[Desktop Entry]</p>
+                                  <p>Encoding=UTF-8</p>
+                                  <p>Version=1.1</p>
+                                  <p>Type=Application</p>
+                                  <p>Terminal=false</p>
+                                  <p>Exec=/home/user/scripts/mouse/trackball_left.sh</p>
+                                  <p>Name= Trackman - Left</p>
+                                  <p>Icon=/home/user/scripts/mouse/mouse_left.png</p>
+                                </blockquote>
+                                <p>Everything worked peachy, albeit the overhead of having to run the appropriate desktop app to change the profile.</p>
+
+                                <p>Then came the need for remembering the last-activated profile. If I had the right-hand map profile in .xprofile file, and it was a left-handed week, I had to awkwardly double-click with my left pinky to activate the left-hand profile. I can't have THAT! </p>
+
+                                <p>So I added a line to the end of both the scripts to write the profile being activated to a scratch file.</p>
+
+                                <p>In the left-hand profile script:</p>
+                                <blockquote>
+                                <p>echo "left" > "/home/user/scripts/mouse/last_mouse_position"</p>
+                                </blockquote>
+                                <p>In the right-hand profile script:</p>
+                                <blockquote>
+                                <p>echo "right" > "/home/user/scripts/mouse/last_mouse_position"</p>
+                                </blockquote>
+                                <p>Then I used another script to look at the scratch file and decide with script corresponding to the last profile needs to be called. I call it the <strong>mouse_switcher.sh</strong>:</p>
+                                <blockquote>
+                                  <p>#!/bin/bash</p>
+
+                                  <p>line=$(head -n 1 "/home/user/scripts/mouse/last_mouse_position")</p>
+                                  <p>if [[ $line == 'left' ]]; then</p>
+                                  <p>    source "/home/user/scripts/mouse/trackball_left.sh"</p>
+                                  <p>elif [[ $line == 'right' ]]; then</p>
+                                  <p>    source "/home/user/scripts/mouse/trackball_right.sh"</p>
+                                  <p>fi</p>
+                                </blockquote>
+                                <p>Now I just needed to add the mouse_switcher.sh to the .xprofile file or the your preferred way of startup scripts.</p>
+
+                                <p>I was pretty happy with this setup for a while and then came the use-case of sharing the mouse between my workstation and my laptop. I had the same version of Ubuntu so I just replicated the scripts. I had to use an USB switch to share the keyboard and mouse between machines when they were both running; which in-turn means the scripts set to run during the system startup or session initialization wouldn't be triggered. So, the mouse would essentially be with the default button mapping whenever you switch between machines. I needed something to capture the event of the mouse being plugged-in and then trigger the mouse_switcher.sh script. <strong>Light bulb</strong></p>
+
+                                <p>I created a new file /etc/udev/rules.d/mouse_profiler.rules containing the below line:</p>
+                                <blockquote>
+                                  <p>ACTION=="add", ATTRS{idVendor}=="046d", ATTRS{idProduct}=="c408", RUN+="/home/user/scripts/mouse/mouse_switcher.sh"</p>
+                                </blockquote>
+                                <p>I plug in the mouse and the script gets triggered aaand the mouse still has the default button map. Pretty frustrating. After a lot of scouring online forums, I found out that xinput is refreshed after the udev rules are executed. Just great. I tried delayed script run using sleep, but that didn't work either. I wasn't ready to give up and I came across this beautiful idea of using inotify watchers. Inotify is a monitoring system looking over the filesystem. You can setup inotify watchers to do a certain action if a file is being modified or deleted or accessed, etc.</p>
+
+                                <p>The final solution is to have a inotify watcher looking for modifications to a scratch file, that gets modified whenever the mouse is plugged in. We already know how to do that. In the udev rules file /etc/udev/rules.d/mouse_profiler.rules, instead of calling mouse_switcher.sh:
+
+                                </p>
+                                <blockquote>
+                                  <p>ACTION=="add", ATTRS{idVendor}=="046d", ATTRS{idProduct}=="c408", RUN+="/home/user/scripts/mouse/trigger_mouse_connect.sh"</p>
+                                </blockquote>
+                                <p>trigger_mouse_connect.sh contains:</p>
+                                <blockquote>
+                                  <p>#!/bin/bash</p>
+
+                                  <p>lock="/home/kavin/scripts/mouse/mouse_profile.lock"</p>
+
+                                  <p>exec 9>"$lock"</p>
+                                  <p>if ! flock -n 9; then</p>
+                                  <p>    exit 1</p>
+                                  <p>fi</p>
+                                  <p>echo "Profile Change triggered - $(date)" > $lock &</p>
+
+                                </blockquote>
+                                <p>Then the only remaining step is to setup the inotify watcher. You can set it up in the ~/.xprofile file so it runs at the beginning of every session.</p>
+                                <blockquote>
+                                  <p>file-inotify ~/scripts/mouse/mouse_profile.lock ~/scripts/mouse/mouse_switcher.sh &</p>
+                                </blockquote>
+                                <p>That's it, after 4 hours I was able to keep switching between computers to my heart's content, without having to do anything to keep my stupid scroll wheel.</p>
+
+
+                         </div>
+
+                         <div class="blog-author">
+                              <div class="media">
+                                   <div class="media-object pull-left">
+                                        <img src="images/author-image1.jpg" class="img-circle img-responsive" alt="blog">
+                                   </div>
+                                   <div class="media-body">
+                                        <h3 class="media-heading"><a href="#">Kavin Chandrasekaran</a></h3>
+
+                                   </div>
+                              </div>
+                         </div>
+
+                         <div class="blog-comment">
+                              <h3>2 Comments</h3>
+
+                         </div>
+
+                         <div class="blog-comment-form">
+                              <h3>Leave a Comment</h3>
+                                   <form action="#" method="post">
+                                        <textarea class="form-control" placeholder="Message" rows="5" name"Your Comments" required></textarea>
+                                        <input type="text" class="form-control" placeholder="Name" name="name" required>
+                                        <input type="email" class="form-control" placeholder="Email" name="email" required>
+                                        <div class="col-md-3 col-sm-4">
+                                             <input type="submit" class="form-control" value="Post Your Comment">
+                                        </div>
+                                   </form>
+                         </div>
+                    </div>
+          </div>
+     </div>
+</section>
+
+<!-- Footer Section -->
+
+<footer>
+     <div class="container">
+          <div class="row">
+
+               <div class="col-md-3 col-sm-3">
+                    <i class="fa fa-magnet"></i>
+               </div>
+
+               <div class="col-md-4 col-sm-4">
+                    <p>124 Market Street, Suite 3570 San Francisco, CA 3042 United States</p>
+               </div>
+
+               <div class="col-md-offset-1 col-md-4 col-sm-offset-1 col-sm-3">
+                    <p><a href="mailto:youremail@gmail.com">hello@yourstudio.co</a></p>
+                    <p>(+01) 2048937 / 02 203403</p>
+               </div>
+
+               <div class="clearfix col-md-12 col-sm-12">
+                    <hr>
+               </div>
+
+               <div class="col-md-6 col-sm-6">
+                    <div class="footer-copyright">
+                         <p>© 2016 Magnet Studio | All Rights Reserved.</p>
+                    </div>
+               </div>
+
+               <div class="col-md-6 col-sm-6">
+                    <ul class="social-icon">
+                         <li><a href="#" class="fa fa-facebook"></a></li>
+                         <li><a href="#" class="fa fa-twitter"></a></li>
+                         <li><a href="#" class="fa fa-linkedin"></a></li>
+                    </ul>
+               </div>
+
+          </div>
+     </div>
+</footer>
+
+
+<!-- SCRIPTS -->
+
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/custom.js"></script>
+
+</body>
+</html>
